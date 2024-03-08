@@ -6,6 +6,7 @@
 .link {
   text-decoration: none;
   color: black;
+  padding: 14px;
 }
 .link:hover {
   text-decoration: underline;
