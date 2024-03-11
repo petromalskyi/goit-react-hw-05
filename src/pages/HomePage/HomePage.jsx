@@ -1,35 +1,38 @@
 import { useEffect, useState } from 'react';
 import MovieList from '../../components/MovieList/MovieList';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import Loader from '../../components/Loader/Loader';
 import { getMovies } from '../../movies-api';
-
-// import { Suspense, lazy } from 'react';
-// const MovieList = lazy(() => import('../../components/MovieList/MovieList'));
-// const getMovies = lazy(() => import('../../movies-api'));
+import css from './HomePage.module.css';
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     async function getData() {
       try {
+        setIsLoading(true);
         const data = await getMovies();
-
-        console.log('data', data);
-        console.log('data.results', data.results);
-        setMovies(data);
-        console.log('movies', movies);
-        console.log('movies.results', movies.results);
+        setMovies(data.results);
       } catch (error) {
-        console.log('error');
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     }
     getData();
   }, []);
 
   return (
-    <div>
-      <h1>Trending today</h1>
-      {console.log('HomePage movies', movies)}
-      {movies.length > 0 && <MovieList results={movies.results}></MovieList>}
-    </div>
+    <>
+      <h1 className={css.title}>Trending today</h1>
+      {isLoading && <Loader></Loader>}
+      {error && <ErrorMessage />}
+      <div className={css.container}>
+        {movies.length > 0 && <MovieList results={movies}></MovieList>}
+      </div>
+    </>
   );
 }

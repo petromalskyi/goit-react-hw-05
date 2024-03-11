@@ -9,12 +9,34 @@ const options = {
   },
 };
 
-// const url =
-//   'https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1';
-const url = 'trending/movie/day?language=en-US';
-
 export const getMovies = async () => {
+  const url = 'trending/movie/day?language=en-US';
+
   const response = await axios.get(url, options);
-  console.log('JS response.data', response.data);
+
   return response.data;
+};
+
+export const getMovieId = async movieId => {
+  const url = `/movie/${movieId}?language=en-US`;
+  const response = await axios.get(url, options);
+  return response.data;
+};
+
+export const getCast = async movieId => {
+  const url = `/movie/${movieId}/credits?language=en-US`;
+  const response = await axios.get(url, options);
+  return response.data.cast;
+};
+
+export const getReviews = async movieId => {
+  const url = `/movie/${movieId}/reviews?language=en-US&page=1`;
+  const response = await axios.get(url, options);
+  return response.data.results;
+};
+
+export const getMoviesSearch = async moviesFilter => {
+  const url = `/search/movie?query=${moviesFilter}&include_adult=false&language=en-US&page=1`;
+  const response = await axios.get(url, options);
+  return response.data.results;
 };
