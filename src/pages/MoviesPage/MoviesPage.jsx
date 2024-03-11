@@ -46,9 +46,9 @@ export default function MoviesPage() {
         {filteredMovies.length > 0 && (
           <MovieList results={filteredMovies}></MovieList>
         )}
-        {/* {!filteredMovies.length && (
+        {!filteredMovies.length && moviesFilter && (
           <p>After your query information is absent</p>
-        )} */}
+        )}
       </div>
     </>
   );
